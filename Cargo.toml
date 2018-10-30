@@ -1,0 +1,9 @@
+[package]
+name = "lamp_sign"
+version = "0.1.0"
+authors = ["pow3roverlord"]
+
+[dependencies]
+rand = "0.5"
+sha3 = "0.8.0"
+blake2 = "0.8"
