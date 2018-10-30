@@ -49,20 +49,36 @@ fn main() {
 
     let a = generate_new_key();
 
-    // ниже буду пробовать создать массив хэшей ключей, вместо того, что бы объявлять массив по маске Vec<T>, где Т - тип, буду объявлять массив через 1-ый элемент
-
+    // ниже буду пробовать создать массив хэшей ключей, вместо того, что бы объявлять массив по маске Vec<T>, 
+    // где Т - тип, буду объявлять массив через 1-ый элемент, т.к. не понимаю, какой тип выдает hasher.result(..) 
+    // или sha3::Sha3_256::digest(&a.priv_key_0_part[i]), поэтому не могу написать функцию generate_hash_vect (vec_inp: Vec<u8>)
+    // и вынужден как мудак копировать код 
     let h_0_slice = a.priv_key_0_part[0].to_string();
-    let mut hasher = Sha3_256::new();
-    hasher.input(&h_0_slice);
-    let mut h_0_hash = hasher.result();
-    let mut hash_v = vec! [h_0_hash];
+    let mut hasher_gen_0 = Sha3_256::new();
+    hasher_gen_0.input(&h_0_slice);
+    let h_0_hash = hasher_gen_0.result();
+    let mut hash_v_0 = vec! [h_0_hash];
     for i in 1..256 {
+        let mut hasher2 = Sha3_256::new();
         let mut h_i_slice = a.priv_key_0_part[i].to_string();
-        hasher.input(&h_i_slice);
-        let mut h_i_hash = hasher.result();
-        hash_v.push(h_i_hash);
+        hasher2.input(&h_i_slice);
+        let mut h_i_hash = hasher2.result();
+        hash_v_0.push(h_i_hash);
     }
-    println!("{:x}", hash_v[0]);
+    
+    let h_1_slice = a.priv_key_1_part[0].to_string();
+    let mut hasher_gen_1 = Sha3_256::new();
+    hasher_gen_1.input(&h_1_slice);
+    let h_1_hash = hasher_gen_1.result();
+    let mut hash_v_1 = vec! [h_1_hash];
+    for i in 1..256 {
+        let mut hasher2 = Sha3_256::new();
+        let mut h_i_slice = a.priv_key_0_part[i].to_string();
+        hasher2.input(&h_i_slice);
+        let mut h_i_hash = hasher2.result();
+        hash_v_1.push(h_i_hash);
+    }
+
     
 //    for i in 1..256 {
 //        let mut h_var = sha3::Sha3_256::digest(&a.priv_key_0_part[i]);
@@ -81,7 +97,7 @@ fn main() {
 //    let b = generate_hash_vect(a.priv_key_0_part);
 
     for i in 0..256 {
-        println!("I: {} ||, II: {}", a.priv_key_0_part[i], a.priv_key_1_part[i]);
+        println!("I: {} ||, II: {} ||, hash1: {:x}, ||, hash2: {:x}", a.priv_key_0_part[i], a.priv_key_1_part[i], hash_v_0[i], hash_v_1[i]);
     }
 //private key on your desk    
 }
