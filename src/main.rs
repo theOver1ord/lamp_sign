@@ -56,11 +56,12 @@ fn main() {
     hasher.input(&h_0_slice);
     let mut h_0_hash = hasher.result();
     let mut hash_v = vec! [h_0_hash];
-//    for i in 1..256 {
-//        let mut h_i_slice = a.priv_key_0_part[i].to_string();
-//        let mut h_i_hash = hasher.result();
-//        hash_v.push(h_i_hash);
-//    }
+    for i in 1..256 {
+        let mut h_i_slice = a.priv_key_0_part[i].to_string();
+        hasher.input(&h_i_slice);
+        let mut h_i_hash = hasher.result();
+        hash_v.push(h_i_hash);
+    }
     println!("{:x}", hash_v[0]);
     
 //    for i in 1..256 {
